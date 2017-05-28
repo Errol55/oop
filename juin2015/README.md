@@ -64,3 +64,72 @@ public class Triangle3D {
     }
 }
 ```
+# Question 3
+
+## (a)
+
+```java
+public class ParallelMatrixFilter extends MatrixFilter {
+
+    // (...)
+    
+    @Override
+    public double[] expFilter(double alpha) throws ParameterOutOfBoundsException {
+        if ((alpha < 0.0) || (alpha > 1.0))
+            throw new ParameterOutOfBoundsException();
+        double[] mean = new double[8];
+
+        Thread[] threads = new Thread[8];
+        for (int col = 0; col < 8; col++) {
+            threads[col] = new FilterThread(mean, col, alpha);
+            threads[col].start();
+        }
+
+        for (int i = 0; i < 8; i++) {
+            try {
+                threads[i].join();
+            } catch (InterruptedException e) {
+                return null;
+            }
+        }
+
+        return mean;
+    }
+
+    private class FilterThread extends Thread {
+
+        private int col;
+        private double[] mean;
+        private double alpha;
+
+        FilterThread(double[] mean, int col, double alpha) {
+            this.col = col;
+            this.mean = mean;
+            this.alpha = alpha;
+        }
+
+        @Override
+        public void run() {
+            mean[col] = data[0][col];
+            for (int row = 1; row < data.length; ++row)
+                mean[col] = (1.0 - alpha) * mean[col] + alpha * data[row][col];
+
+        }
+    }
+}
+```
+
+## (b)
+```java
+synchronized(o) {
+  // bloc
+}
+```
+L'exécution est bloquée jusqu'à ce qu'un verrou sur `o` soit acquis. 
+Le verrou est libéré à la fin du bloc.
+
+Cette construction permet donc de créer des classes _thread-safe_.
+
+## (c)
+
+Ce n'est pas nécessaire car plusieurs threads ne modifient pas les mêmes données.
