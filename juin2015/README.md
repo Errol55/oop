@@ -12,6 +12,14 @@ La fonction doit être :
 4. Consistante
 5. Si `x` n'est pas `null`, `x.equals(null) == false`  
 
+Lorsque `equals` est définie, `hashcode` doit être définie.
+```java 
+public int hashCode() {
+  // (...)
+}
+```
+Cette fonction retourne un hash de l'objet tel que `a.equals(b)` implique `a.hashcode() == b.hashcode()`.
+
 ## (b)
 ```
 false
