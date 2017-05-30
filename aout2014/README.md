@@ -7,7 +7,7 @@ Exemple :
 Super-classe : Shape  
 Sous-classes : Rectangle, Triangle
 
-**Spécification** : La super-classe définit un certain comportement partagé par toutes ces sous-classes. 
+**Spécification** : La super-classe définit un certain comportement partagé par toutes ses sous-classes. 
 
 Exemple :  
 Super-classe : Drawable   
