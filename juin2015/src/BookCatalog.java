@@ -23,13 +23,15 @@ public class BookCatalog implements BookCatalogExporter, Cloneable {
     public void export(String filename, BookCatalogFormat format) throws IOException {
 
         FileWriter fileWriter = new FileWriter(filename);
+        try{
+            fileWriter.write(format.beginDocument() + "\n");
 
-        fileWriter.write(format.beginDocument() + "\n");
+            for (Book book : books)
+                fileWriter.write(book.toString(format) + "\n");
 
-        for (Book book : books)
-            fileWriter.write(book.toString(format) + "\n");
-
-        fileWriter.write(format.endDocument() + "\n");
-        fileWriter.close();
+            fileWriter.write(format.endDocument() + "\n");
+        } finally {
+            fileWriter.close();
+        }
     }
 }
